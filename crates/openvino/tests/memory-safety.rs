@@ -9,6 +9,18 @@ use openvino::{Core, DeviceType, ElementType, Shape, Tensor};
 use std::fs;
 
 #[test]
+fn test_set_shape_memory_safety() -> anyhow::Result<()> {
+    let shape = Shape::new(&[2, 2])?;
+    let mut tensor = Tensor::new(ElementType::F32, &shape)?;
+    let new_shape = Shape::new(&[1, 2])?;
+    tensor.set_shape(&new_shape)?;
+    let shape = tensor.get_shape()?;
+    let dims = shape.get_dimensions();
+    assert_eq!(dims, &[1, 2]);
+    Ok(())
+}
+
+#[test]
 fn memory_safety() -> anyhow::Result<()> {
     let mut core = Core::new()?;
     let xml = fs::read_to_string(fixture::graph())?;

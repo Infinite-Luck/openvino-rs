@@ -60,9 +60,12 @@ impl Tensor {
     }
 
     /// (Re)Set the shape of the tensor to a new shape.
-    pub fn set_shape(&self, shape: &Shape) -> Result<Self> {
+    ///
+    /// # Note
+    /// This method modifies the tensor in place and does not create a new tensor.
+    pub fn set_shape(&mut self, shape: &Shape) -> Result<()> {
         try_unsafe!(ov_tensor_set_shape(self.ptr, shape.as_c_struct()))?;
-        Ok(Self { ptr: self.ptr })
+        Ok(())
     }
 
     /// Get the shape of the tensor.
