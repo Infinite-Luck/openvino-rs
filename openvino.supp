@@ -1,0 +1,6 @@
+{
+   openvino/ov_core_get_property
+   Memcheck:Leak
+   fun:_Znam
+   fun:ov_core_get_property
+}
